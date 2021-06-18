@@ -1,7 +1,6 @@
 import unittest
-import quote
+from app.models import Quote
 
-Quote = quote.Quote
 
 class QuoteTest(unittest.TestCase):
     def setUp(self):
