@@ -21,8 +21,6 @@ def create_app(config_name):
     #initializing the application
     app = Flask(__name__)
 
-    
-
     #setting up the configuration
     app.config.from_object(config_options[config_name])
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
