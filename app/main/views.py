@@ -1,4 +1,4 @@
-from flask import render_template,request,redirect,url_for
+from flask import render_template,request,redirect,url_for,abort,flash
 from . import main
 from ..request import get_quotes
 from ..models import User, Blog,Comment
@@ -76,17 +76,17 @@ def upload_blog(uname):
     return render_template('new_blog.html', form = form)
 
 
-@main.route('/<int:blog_id>/delete',methods=['POST'])
+@main.route('/<int:blog_id>/delete',methods=['POST','GET'])
 @login_required
 def delete_blog(blog_id):
     blog=Blog.query.get(blog_id)
-    if blog.user != current_user:
+    if blog.user_id != current_user.id:
         abort(403)
     
     db.session.delete(blog)
     db.session.commit()
 
-    return redirect(url_for('main.profile',uname=blog.user.username))
+    return redirect(url_for('main.profile',uname=current_user.username))
 
 
 @main.route('/<bname>/update',methods=['GET','POST'])

@@ -1,10 +1,14 @@
 {% macro displayBlog(blog_list)%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <div class="container">    
 {% for blog in blog_list %}
     Title:{{blog.title}}
     <p> Blog:{{blog.blog}}</p>
     <a href="{{url_for('main.comment_blog',blog_id=blog.id)}}"><button type="button" class="btn btn-success">Comments</button></a><br>
+
+    <a href="{{url_for('main.delete_blog',blog_id=blog.id)}}"><i class="fa fa-trash " aria-hidden="true"></i></a> <br>
     
-{% endfor %}
+    {% endfor %}
 </div>
 {% endmacro %}
