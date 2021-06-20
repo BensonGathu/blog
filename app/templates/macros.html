@@ -5,10 +5,33 @@
 {% for blog in blog_list %}
     Title:{{blog.title}}
     <p> Blog:{{blog.blog}}</p>
+    <p> Posted on:{{blog.posted.strftime('%Y-%m-%d')}}</p>
     <a href="{{url_for('main.comment_blog',blog_id=blog.id)}}"><button type="button" class="btn btn-success">Comments</button></a><br>
 
-    <a href="{{url_for('main.delete_blog',blog_id=blog.id)}}"><i class="fa fa-trash " aria-hidden="true"></i></a> <br>
+    <div class="row">
+        <a href="{{url_for('main.update_blog',blog_id=blog.id)}}"><button type="button" class="btn btn-light">Update Blog</button>
+        </a>
+        <a href="{{url_for('main.delete_blog',blog_id=blog.id)}}"><i class="fa fa-trash " aria-hidden="true"></i></a> <br>
+     
+    </div>
+    
     
     {% endfor %}
 </div>
 {% endmacro %}
+
+{% macro displayComments(comments_list)%}
+{% for comment in comments_list %}
+   <p> {{comment.comment}} </p>
+    {{comment.posted.strftime('%Y-%m-%d')}}
+{%endfor %}
+
+{% endmacro %}
+
+
+{% macro displayUserBlogs(user_blogs)%}
+{% for blog in user_blogs %}
+    <h4>{{blog.title}}</h4>
+    <p>{{blog.blog}}</p>
+    {%endfor%}
+{% endmacro%}

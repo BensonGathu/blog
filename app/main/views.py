@@ -20,11 +20,12 @@ def index():
 @main.route('/user/<uname>')
 def profile(uname):
     user = User.query.filter_by(username = uname).first()
+    blogs = Blog.query.filter_by(user_id=current_user.id).all()
 
     if user is None:
         abort(404)
 
-    return render_template("profile/profile.html", user = user)
+    return render_template("profile/profile.html", user = user,blogs=blogs)
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
@@ -89,19 +90,19 @@ def delete_blog(blog_id):
     return redirect(url_for('main.profile',uname=current_user.username))
 
 
-@main.route('/<bname>/update',methods=['GET','POST'])
+@main.route('/<int:blog_id>/update',methods=['GET','POST'])
 @login_required
-def update_blog(bname):
+def update_blog(blog_id):
     form=UploadBlogForm()
-    blog=Blog.query.get(bname)
-    if blog.user != current_user:
+    blog=Blog.query.get(blog_id)
+    if blog.user_id != current_user.id:
         abort(403)
     if form.validate_on_submit():
         blog.title=form.title.data
         blog.blog=form.blog.data
         db.session.commit()
         flash('Successfully Updated!')
-        return redirect(url_for('main.profile',uname=blog.user.username))
+        return redirect(url_for('main.profile',uname=current_user.username))
     elif request.method=='GET':
         form.title.data=blog.title
         form.blog.data=blog.blog
