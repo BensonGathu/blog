@@ -1,0 +1,10 @@
+{% macro displayBlog(blog_list)%}
+<div class="container">    
+{% for blog in blog_list %}
+    Title:{{blog.title}}
+    <p> Blog:{{blog.blog}}</p>
+    <a href="{{url_for('main.comment_blog',blog_id=blog.id)}}"><button type="button" class="btn btn-success">Comments</button></a><br>
+    
+{% endfor %}
+</div>
+{% endmacro %}

@@ -13,7 +13,9 @@ from flask_login import login_required,current_user
 def index():
     #Getting our quotes
     quotes = get_quotes()
-    return render_template("index.html",quotes=quotes)
+    blog = Blog.query.filter_by().all()
+    return render_template("index.html",quotes=quotes,blog=blog)
+
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -72,3 +74,52 @@ def upload_blog(uname):
 
         return redirect(url_for('main.index'))
     return render_template('new_blog.html', form = form)
+
+
+@main.route('/<int:blog_id>/delete',methods=['POST'])
+@login_required
+def delete_blog(blog_id):
+    blog=Blog.query.get(blog_id)
+    if blog.user != current_user:
+        abort(403)
+    
+    db.session.delete(blog)
+    db.session.commit()
+
+    return redirect(url_for('main.profile',uname=blog.user.username))
+
+
+@main.route('/<bname>/update',methods=['GET','POST'])
+@login_required
+def update_blog(bname):
+    form=UploadBlogForm()
+    blog=Blog.query.get(bname)
+    if blog.user != current_user:
+        abort(403)
+    if form.validate_on_submit():
+        blog.title=form.title.data
+        blog.blog=form.blog.data
+        db.session.commit()
+        flash('Successfully Updated!')
+        return redirect(url_for('main.profile',uname=blog.user.username))
+    elif request.method=='GET':
+        form.title.data=blog.title
+        form.blog.data=blog.blog
+
+    return render_template('update_blog.html',form=form,legend="Update Blog")
+
+
+@main.route("/comment/<int:blog_id>",methods=["POST","GET"])
+@login_required
+def comment_blog(blog_id):
+    form = CommentsForm()
+    blog = Blog.query.get(blog_id)
+    all_comments = Comment.get_comments(blog_id)
+    if form.validate_on_submit():
+        new_comment = form.comment.data
+        blog_id = blog_id
+        user_id = current_user._get_current_object().id
+        comment_object = Comment(comment=new_comment,user_id=user_id,blog_id=blog_id)
+        comment_object.save_comment()
+        return redirect(url_for(".comment_blog",blog_id=blog_id))
+    return render_template("comments.html",comment_form=form,blog=blog,all_comments=all_comments)

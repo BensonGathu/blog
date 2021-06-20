@@ -74,6 +74,8 @@ class Comment(db.Model):
     comment = db.Column(db.String(255))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+    blog_id = db.Column(db.Integer,db.ForeignKey("blogs.id"))
+
 
     def save_comment(self):
         db.session.add(self)
@@ -83,7 +85,7 @@ class Comment(db.Model):
         db.session.commit()
     @classmethod
     def get_comments(cls,id):
-        comments = Comment.query.filter_by(user_id=id).all()
+        comments = Comment.query.filter_by(blog_id=id).all()
         return comments
 
     def __repr__(self):
