@@ -47,7 +47,7 @@ class User(UserMixin,db.Model):
         return check_password_hash(self.pass_secure,password)
 
     def __repr__(self):
-       return f'User {self.username}'
+       return f'{self.username}'
 
     
 class Blog(db.Model):
@@ -66,7 +66,7 @@ class Blog(db.Model):
         db.session.commit()
 
     def __repr__(self):
-       return f'Blog {self.title}'
+       return f'{self.title}'
 
 class Comment(db.Model):
     __tablename__ = "comments"
@@ -75,6 +75,7 @@ class Comment(db.Model):
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     blog_id = db.Column(db.Integer,db.ForeignKey("blogs.id"))
+    
 
 
     def save_comment(self):

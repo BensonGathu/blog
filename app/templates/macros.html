@@ -23,7 +23,9 @@
 {% macro displayComments(comments_list)%}
 {% for comment in comments_list %}
    <p> {{comment.comment}} </p>
-    {{comment.posted.strftime('%Y-%m-%d')}}
+   <p>posted by: {{comment.users}}</p>
+   {{comment.posted.strftime('%Y-%m-%d')}} <br>
+    
 {%endfor %}
 
 {% endmacro %}

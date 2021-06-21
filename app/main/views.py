@@ -106,7 +106,7 @@ def update_blog(blog_id):
     elif request.method=='GET':
         form.title.data=blog.title
         form.blog.data=blog.blog
-
+ 
     return render_template('update_blog.html',form=form,legend="Update Blog")
 
 
