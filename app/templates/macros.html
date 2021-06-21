@@ -1,3 +1,4 @@
+
 {% macro displayBlog(blog_list)%}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -7,13 +8,7 @@
     <p> Blog:{{blog.blog}}</p>
     <p> Posted on:{{blog.posted.strftime('%Y-%m-%d')}}</p>
     <a href="{{url_for('main.comment_blog',blog_id=blog.id)}}"><button type="button" class="btn btn-success">Comments</button></a><br>
-
-    <div class="row">
-        <a href="{{url_for('main.update_blog',blog_id=blog.id)}}"><button type="button" class="btn btn-light">Update Blog</button>
-        </a>
-        <a href="{{url_for('main.delete_blog',blog_id=blog.id)}}"><i class="fa fa-trash " aria-hidden="true"></i></a> <br>
-     
-    </div>
+    
     
     
     {% endfor %}
@@ -32,8 +27,14 @@
 
 
 {% macro displayUserBlogs(user_blogs)%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% for blog in user_blogs %}
     <h4>{{blog.title}}</h4>
     <p>{{blog.blog}}</p>
+    <div class="row">
+        <a href="{{url_for('main.update_blog',blog_id=blog.id)}}"><button type="button" class="btn btn-light">Update Blog</button>
+        </a>
+        
+        <a href="{{url_for('main.delete_blog',blog_id=blog.id)}}"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a> <br>
     {%endfor%}
 {% endmacro%}
